@@ -88,6 +88,8 @@ module Byebug
 
       output.puts bold("\n  Breakpoint #{breakpoint.id}. ") + n_hits(breakpoint)
 
+      Pry::Byebug::Breakpoints.delete breakpoint.id
+
       expr = breakpoint.expr
       return unless expr
 
