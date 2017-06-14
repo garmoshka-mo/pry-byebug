@@ -119,10 +119,23 @@ module Byebug
       end
     end
 
-    def perform_backtrace(_options)
-      Byebug::WhereCommand.new(self, 'backtrace').execute
+    def perform_backtrace(options)
+      if options[:sample]
+        service = Byebug::WhereCommand.new(self, 'backtrace')
+        log_path = bt_path options[:sample]
+        File.open(log_path, "w") do |f|
+          f.puts service.get_backtrace
+        end
+        print log_path
+      else
+        Byebug::WhereCommand.new(self, 'backtrace').execute
+      end
 
       resume_pry
+    end
+
+    def bt_path(number)
+      "#{Rails.root}/backtrace_#{number}.txt"
     end
 
     def perform_next(options)

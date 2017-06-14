@@ -21,7 +21,7 @@ module PryByebug
     def process
       PryByebug.check_file_context(target)
 
-      breakout_navigation :backtrace
+      breakout_navigation :backtrace, sample: args.first
     end
   end
 end
